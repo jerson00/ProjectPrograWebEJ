@@ -1,13 +1,18 @@
-﻿using System;
+﻿using PrograWebProjectEJ.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
 namespace PrograWebProjectEJ.Controllers
 {
     public class CajaController : Controller
+
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Caja
         public ActionResult Index()
         {
@@ -28,41 +33,46 @@ namespace PrograWebProjectEJ.Controllers
 
         // POST: Caja/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create([Bind(Include = "Id,Monto")] Caja caja)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                db.Caja.Add(caja);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(caja);
         }
 
         // GET: Caja/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Caja caja = db.Caja.Find(id);
+            if (caja == null)
+            {
+                return HttpNotFound();
+            }
+            return View(caja);
         }
 
         // POST: Caja/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit([Bind(Include = "Id,Monto")] Caja caja)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                db.Entry(caja).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(caja);
         }
+    
 
         // GET: Caja/Delete/5
         public ActionResult Delete(int id)

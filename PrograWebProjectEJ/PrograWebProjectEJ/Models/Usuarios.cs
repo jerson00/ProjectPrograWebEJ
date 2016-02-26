@@ -10,6 +10,8 @@ namespace PrograWebProjectEJ.Models
     {
         [Key]
         public int ID { get; set; }
+        [Required]
+        [Display(Name = "Correo electrónico")]
         public string Correo { get; set; }
 
         [Required]

@@ -287,10 +287,11 @@
     <Content Include="Views\Sorteos\Index.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Caja\Index.cshtml" />
+    <Content Include="Views\Caja\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Caja\" />
     <Folder Include="Views\Ganadores\" />
   </ItemGroup>
   <ItemGroup>
