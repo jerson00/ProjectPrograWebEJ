@@ -10,6 +10,7 @@ namespace ProjectEJ.Controllers
     public class ReportesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        [Authorize]
         // GET: Reporte
         public ActionResult Index()
         {

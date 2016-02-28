@@ -13,6 +13,7 @@ namespace ProjectEJ.Controllers
     public class SorteosController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        [Authorize]
 
         // GET: Sorteos
         public ActionResult Index()
@@ -82,8 +83,12 @@ namespace ProjectEJ.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sorteos).State = EntityState.Modified;
-                db.SaveChanges();
+                if (sorteos.Is_Finished != true)
+                {
+                    db.Entry(sorteos).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                
                 return RedirectToAction("Index");
             }
             return View(sorteos);
