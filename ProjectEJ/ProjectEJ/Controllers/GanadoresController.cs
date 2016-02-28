@@ -7,12 +7,17 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjectEJ.Models;
+using System.Web.Helpers;
+using System.Web.Security;
+using Microsoft.AspNet.Identity;
+using ProjectEJ.Models.Entidades;
 
 namespace ProjectEJ.Controllers
 {
     public class GanadoresController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        [Authorize]
 
         // GET: Ganadores
         public ActionResult Index()
@@ -39,7 +44,7 @@ namespace ProjectEJ.Controllers
         // GET: Ganadores/Create
         public ActionResult Create()
         {
-            ViewBag.Sorteos = db.Sorteos.Where(s => s.Is_Active == true && s.Is_Finished == false && s.Fecha_Expiracion < DateTime.Now);
+            ViewBag.Sorteos = db.Sorteos.Where(s => s.Is_Active == true && s.Is_Finished == false && s.Fecha_Expiracion <= DateTime.Now);
             return View();
         }
 
@@ -63,6 +68,9 @@ namespace ProjectEJ.Controllers
                 };
                 db.Ganadores.Add(objGanadores);
                 db.SaveChanges();
+                notificarGanadores(sorteo.Id, objGanadores.PrimerNumero, 1);
+                notificarGanadores(sorteo.Id, objGanadores.SegundoNumero, 2);
+                notificarGanadores(sorteo.Id, objGanadores.TercerNumero, 3);
                 Ganadores.updateSorteo(db, sorteo.Id);
                 return RedirectToAction("Index");
             }
@@ -135,5 +143,94 @@ namespace ProjectEJ.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public void notificarGanadores(int sorteo, int numero, int posicion)
+        {
+            List<NotificarGanadores> listaGanadores = new List<NotificarGanadores>();
+            var users = db.Users.ToList();
+            var apuestasGanadores = db.Apuestas.Where(a => a.Sorteos.Id == sorteo && a.Numero == numero);
+            foreach (var apuestas in apuestasGanadores)
+            {
+                double premio = 0;
+                var email = "";
+
+                foreach (var usuario in users)
+                {
+                    if (usuario.Id == apuestas.Usuario_Id)
+                    {
+                        email = usuario.Email;
+                    }
+                }
+
+                if (posicion == 1)
+                {
+                    premio = apuestas.Monto * 60;
+                    var objGanador = new NotificarGanadores
+                    {
+                        Email = email,
+                        Numero = numero,
+                        Posicion = posicion,
+                        Premio = premio,
+                        Sorteo_Id = sorteo
+                    };
+                    listaGanadores.Add(objGanador);
+                }
+                if (posicion == 2)
+                {
+                    premio = apuestas.Monto * 10;
+                    var objGanador = new NotificarGanadores
+                    {
+                        Email = email,
+                        Numero = numero,
+                        Posicion = posicion,
+                        Premio = premio,
+                        Sorteo_Id = sorteo
+                    };
+                    listaGanadores.Add(objGanador);
+                }
+                if (posicion == 3)
+                {
+                    premio = apuestas.Monto * 5;
+                    var objGanador = new NotificarGanadores
+                    {
+                        Email = email,
+                        Numero = numero,
+                        Posicion = posicion,
+                        Premio = premio,
+                        Sorteo_Id = sorteo
+                    };
+                    listaGanadores.Add(objGanador);
+                }           
+            }
+
+            EnviarNotificaciones(db, listaGanadores);
+        }
+
+        public void EnviarNotificaciones(ApplicationDbContext db, List<NotificarGanadores> listaNotificarGanadores)
+        {
+            try
+            {
+                foreach (var notificarGanador in listaNotificarGanadores)
+                {
+                    var sorteo = db.Sorteos.Where(s => s.Id == notificarGanador.Sorteo_Id).First();
+                    string subject = "Notificación de números favorecidos en los tiempos";
+                    string message = "Usted es uno de los ganadores del sorteo: " + sorteo.Descripcion + " - " + sorteo.Fecha_Expiracion + ", su número favorecido es el: " + notificarGanador.Numero + " en la " + notificarGanador.Posicion + "° posición y su premio es de: " + notificarGanador.Premio;
+                    WebMail.SmtpServer = "smtp.gmail.com";
+                    WebMail.SmtpPort = 587;
+                    WebMail.EnableSsl = true;
+                    WebMail.UserName = "jersonarroyo24@gmail.com";
+                    WebMail.From = "jersonarroyo24@gmail.com";
+                    WebMail.Password = "stvnas23";
+                    WebMail.Send(to: notificarGanador.Email, subject: subject, body: message);
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            
+        }
+
     }
 }

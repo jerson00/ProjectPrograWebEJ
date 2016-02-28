@@ -201,6 +201,8 @@
     <Compile Include="Controllers\GanadoresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MisPremiosController.cs" />
+    <Compile Include="Controllers\ReportesApuestasController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\SorteosController.cs" />
     <Compile Include="Global.asax.cs">
@@ -220,6 +222,8 @@
     <Compile Include="Models\Apuestas.cs" />
     <Compile Include="Models\Caja.cs" />
     <Compile Include="Models\Entidades\GanadoresQuery.cs" />
+    <Compile Include="Models\Entidades\NotificarGanadores.cs" />
+    <Compile Include="Models\Entidades\NumerosApostados.cs" />
     <Compile Include="Models\Ganadores.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -300,9 +304,12 @@
     <Content Include="Views\Ganadores\Create.cshtml" />
     <Content Include="Views\Ganadores\Index.cshtml" />
     <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\MisPremios\Index.cshtml" />
+    <Content Include="Views\ReportesApuestas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ReporteApuestas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

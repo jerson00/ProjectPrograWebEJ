@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<br />
+<div class="row">
+    <form action="/MisPremios" method="get">
+        <div class="col-md-10">
+            <label>Seleccione el sorteo</label>
+            <select class="selectpicker form-control sorteo" id="sorteo" name="sorteos">
+                @foreach (var sorteo in ViewBag.Sorteos)
+                {
+                    if (ViewBag.Sorteo != null && ViewBag.Sorteo.Id == sorteo.Id)
+                    {
+                        <option value="@sorteo.Id" selected> @sorteo.Fecha_Expiracion</option>
+                    }
+                    else
+                    {
+                        <option value="@sorteo.Id"> @sorteo.Fecha_Expiracion</option>
+                    }
+
+                }
+            </select>
+            <br />
+            <input type="submit" value="Mostrar" class="btn btn-default" />
+        </div>
+
+    </form>
+</div>
+
+@if (ViewBag.Sorteo != null)
+{
+    <h2>@ViewBag.Sorteo.Descripcion - @ViewBag.Sorteo.Fecha_Expiracion</h2>
+    <h4>Primer Número: @ViewBag.Ganadores.PrimerNumero</h4>
+    <h4>Segundo Número: @ViewBag.Ganadores.SegundoNumero</h4>
+    <h4>Tercer Número: @ViewBag.Ganadores.TercerNumero</h4>
+}
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Numero
+            </th>
+            <th>
+                Monto
+            </th>
+            <th>
+                Ganador
+            </th>
+            <th>
+                Pocision
+            </th>
+            <th>
+                Premio
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.ListaApostados != null)
+        {
+            foreach (var apuestas in ViewBag.ListaApostados)
+            {
+                <tr>
+                    <td>
+                        @apuestas.Numero
+                    </td>
+                    <td>
+                        @apuestas.Monto
+                    </td>
+                    <td>
+                        @if (@apuestas.Ganador)
+                        {
+                            <input type="checkbox" checked disabled/>
+                        }
+                        else
+                        {
+                            <input type="checkbox" disabled />
+                        }
+                    </td>
+                    <td>
+                        @apuestas.Puesto
+                    </td>
+                    <td>
+                        @apuestas.Premio
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
