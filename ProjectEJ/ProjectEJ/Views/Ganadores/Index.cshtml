@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Números ganadores</h2>
+
+<p>
+    @Html.ActionLink("Crear números ganadores", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Sorteo
+        </th>
+        <th>
+            Primer número
+        </th>
+        <th>
+           Segundo número
+        </th>
+        <th>
+           Tercer número
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var ganadores in ViewBag.Ganadores) {
+    <tr>
+        <td>
+            @ganadores.Descripcion - @ganadores.Fecha_Expiracion
+        </td> 
+        <td>
+            @ganadores.PrimerNumero
+        </td>
+        <td>
+            @ganadores.PrimerNumero
+        </td>
+        <td>
+            @ganadores.TercerNumero
+        </td>
+        
+    </tr>
+}
+
+</table>

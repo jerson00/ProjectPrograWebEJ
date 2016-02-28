@@ -1,0 +1,60 @@
+﻿@model ProjectEJ.Models.Sorteos
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Eliminar Sorteo</h2>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha sorteo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_Expiracion)
+        </dd>
+
+        <dt>
+            Descripción
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            Sorteo activo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Is_Active)
+        </dd>
+
+        <dt>
+            Sorteo finalizado
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Is_Finished)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Eliminar" class="btn btn-default" />
+            </div>
+        </div>
+ 
+    }
+
+    <div>
+        @Html.ActionLink("Cancelar", "Index")
+    </div>

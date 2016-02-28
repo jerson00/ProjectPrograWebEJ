@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 jumbotron">
+        <div class="col-md-6">
+            <label>Seleccione el sorteo</label>
+            <select class="selectpicker form-control sorteo" id="sorteo">
+                @foreach (var sorteo in ViewBag.Sorteos)
+                {
+                    <option value="@sorteo.Id">@sorteo.Descripcion - @sorteo.Fecha_Expiracion</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label>Monto a apostar:</label>
+            <input class="form-control sorteo" type="number" id="monto" name="monto" value="0" min="0" />
+        </div>
+    </div>
+
+</div>
+<br />
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
+            <label>Seleccione el número</label>
+        </div>
+        <div class="col-md-12">
+            @for (int i = 0; i <= 99; i++)
+            {
+                <div class='col-md-2 col-sm-2 col-lg-2 space'>
+                    <!--  <form action="/" method="post"> -->  
+                        <button type="submit" class="btn btn-default numero" id="numero" name="numero" value="@i">
+                                    <p class="text-center">NÚMERO</p>
+                                    <h3 class="text-center">@i</h3>
+                        </button>
+                  <!--  </form> -->
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/Apostar.js"></script>
