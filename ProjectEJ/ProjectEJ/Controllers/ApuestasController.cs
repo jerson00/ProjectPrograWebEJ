@@ -12,6 +12,7 @@ namespace ProjectEJ.Controllers
     public class ApuestasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        [Authorize]
         // GET: Apuestas
         public ActionResult Index()
         {

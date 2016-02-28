@@ -13,6 +13,7 @@ namespace ProjectEJ.Controllers
     public class CajasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        [Authorize]
 
         // GET: Cajas
         public ActionResult Index()

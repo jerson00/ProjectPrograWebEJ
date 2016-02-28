@@ -18,33 +18,46 @@
             Descripción
         </th>
         <th>
-           Sorteo activo
+            Sorteo activo
         </th>
         <th>
             Sorteo finalizado
         </th>
-        <th></th>
+        <th>
+            Opciones
+        </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fecha_Expiracion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Is_Active)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Is_Finished)
-        </td>
-        <td>
-            @Html.ActionLink("Editar sorteo", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar sorteo", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha_Expiracion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Is_Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Is_Finished)
+            </td>
+            @if (item.Is_Finished != true)
+            {
+                <td>
+                    @Html.ActionLink("Editar sorteo", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Eliminar sorteo", "Delete", new { id = item.Id })
+                </td>
+            }
+            else
+            {
+                <td>
+                    No se puede modificar o o eliminar
+                </td>
+            }
+
+        </tr>
+    }
 
 </table>
