@@ -219,6 +219,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Apuestas.cs" />
     <Compile Include="Models\Caja.cs" />
+    <Compile Include="Models\Entidades\ApuestasQuery.cs" />
     <Compile Include="Models\Entidades\GanadoresQuery.cs" />
     <Compile Include="Models\Ganadores.cs" />
     <Compile Include="Models\IdentityModels.cs" />

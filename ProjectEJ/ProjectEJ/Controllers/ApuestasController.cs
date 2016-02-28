@@ -14,7 +14,7 @@ namespace ProjectEJ.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Apuestas
         public ActionResult Index()
-        {
+        {      
             ViewBag.Sorteos = db.Sorteos.Where(s => s.Is_Active == true && s.Is_Finished == false && s.Fecha_Expiracion > DateTime.Now);
             return View();
         }
@@ -46,8 +46,15 @@ namespace ProjectEJ.Controllers
                     Sorteos = sorteo,
                     Usuario_Id = userId
                 };
-                db.Apuestas.Add(objApuesta);
-                db.SaveChanges();
+
+                bool apostar = validarApuesta(db, objApuesta.Numero, objApuesta.Monto);
+                if (apostar)
+                {
+                    db.Apuestas.Add(objApuesta);
+                    db.SaveChanges();
+                }
+                
+                
                 return RedirectToAction("Index");
             }
             catch (Exception e)
@@ -97,6 +104,31 @@ namespace ProjectEJ.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        public bool validarApuesta(ApplicationDbContext db, int numero, double monto)
+        {
+            var listApuestas = Apuestas.getApuestasByNum(db);
+            double total = Apuestas.getTotalPeorCaso(listApuestas);
+            var listVirtual = Apuestas.getVitualList(listApuestas, numero, monto);
+            double totalVirtual = Apuestas.getTotalPeorCaso(listVirtual);
+            double montoCaja = 0;
+            var cajas = db.Caja.ToList();
+            foreach (var caja in cajas)
+            {
+                montoCaja = Convert.ToDouble(caja.Monto);
+            }
+
+            montoCaja += monto;
+
+            if (totalVirtual <= montoCaja)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
