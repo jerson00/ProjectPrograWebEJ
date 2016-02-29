@@ -39,18 +39,32 @@ namespace ProjectEJ.Models
             return Total;
         }
 
-        public static List<ApuestasQuery> getVitualList(List<ApuestasQuery> listaApuestas, int numero, double monto)
+        public static List<ApuestasQuery> getVitualList(List<ApuestasQuery> listaApuestas, int numero, double monto, Sorteos sorteo, string userId)
         {
-            for (int i = 0; i < listaApuestas.Count(); i++)
+            List<ApuestasQuery> listaVirtual = new List<ApuestasQuery>();
+            listaVirtual = new List<ApuestasQuery>(listaApuestas);
+            var exists = false;
+            for (int i = 0; i < listaVirtual.Count(); i++)
             {
-                if (listaApuestas[i].Numero == numero)
+                if (listaVirtual[i].Numero == numero)
                 {
-                    listaApuestas[i].Monto += monto;
+                    listaVirtual[i].Monto += monto;
+                    exists = true;
                 }
             }
 
-            listaApuestas.OrderByDescending(x => x.Monto);
-            return listaApuestas;
+            if (!exists)
+            {
+                var objNuevaApuesta = new ApuestasQuery
+                {
+                    Monto= monto,
+                    Numero = numero
+                };
+                listaVirtual.Add(objNuevaApuesta);
+            }
+
+            var list = listaVirtual.OrderByDescending(x => x.Monto).ToList();
+            return list;
         }
     }
 }

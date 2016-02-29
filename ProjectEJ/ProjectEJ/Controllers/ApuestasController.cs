@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using ProjectEJ.Models;
+using ProjectEJ.Models.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,15 +49,34 @@ namespace ProjectEJ.Controllers
                     Usuario_Id = userId
                 };
 
-                bool apostar = validarApuesta(db, objApuesta.Numero, objApuesta.Monto);
-                if (apostar)
+                var apostar = validarApuesta(db, objApuesta.Numero, objApuesta.Monto, sorteo, userId);
+                if (apostar == null)
                 {
                     db.Apuestas.Add(objApuesta);
                     db.SaveChanges();
+                    var ApuestaResponse = new ApuestaResponse
+                    {
+                        Status = "1",
+                        MontoSugerido = "0",
+                        Monto = objApuesta.Monto.ToString(),
+                        Numero = objApuesta.Numero.ToString()
+                    };
+
+                    return Json(ApuestaResponse, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var ApuestaResponse = new ApuestaResponse
+                    {
+                        Status = "0",
+                        MontoSugerido = apostar,
+                        Monto = "",
+                        Numero = ""
+                    };
+
+                    return Json(ApuestaResponse, JsonRequestBehavior.AllowGet);
                 }
                 
-                
-                return RedirectToAction("Index");
             }
             catch (Exception e)
             {
@@ -108,29 +128,75 @@ namespace ProjectEJ.Controllers
             }
         }
 
-        public bool validarApuesta(ApplicationDbContext db, int numero, double monto)
+        public string validarApuesta(ApplicationDbContext db, int numero, double monto, Sorteos sorteo, string userId)
         {
             var listApuestas = Apuestas.getApuestasByNum(db);
             double total = Apuestas.getTotalPeorCaso(listApuestas);
-            var listVirtual = Apuestas.getVitualList(listApuestas, numero, monto);
+            var listVirtual = Apuestas.getVitualList(listApuestas, numero, monto, sorteo, userId);
             double totalVirtual = Apuestas.getTotalPeorCaso(listVirtual);
             double montoCaja = 0;
+            int cajaId = 0;
             var cajas = db.Caja.ToList();
             foreach (var caja in cajas)
             {
+                cajaId = caja.Id;
                 montoCaja = Convert.ToDouble(caja.Monto);
             }
 
             montoCaja += monto;
-
+            
             if (totalVirtual <= montoCaja)
             {
-                return true;
+                var caja = db.Caja.Find(cajaId);
+                caja.Monto = montoCaja;
+                db.SaveChanges();
+                return null;
             }
             else
             {
-                return false;
+                double apuestaSugerida = getApuestaSugerida(numero, montoCaja, total, listApuestas);
+                return apuestaSugerida.ToString();
             }
+        }
+
+        public double getApuestaSugerida(double numero, double montoCaja, double totalApuestas, List<ApuestasQuery> listaApuestas)
+        {
+            var exists = false;
+            double montoSugerido = 0;
+            int posicion = 0;
+            foreach (var apuesta in listaApuestas)
+            {
+                if (apuesta.Numero == numero)
+                {
+                    if (posicion == 0)
+                    {
+                        exists = true;
+                        montoSugerido = (montoCaja - totalApuestas) / 60;
+                        break;
+                    } else if (posicion == 1)
+                    {
+                        exists = true;
+                        montoSugerido = (montoCaja - totalApuestas) / 10;
+                        break;
+                    } else if (posicion == 2)
+                    {
+                        exists = true;
+                        montoSugerido = (montoCaja - totalApuestas) / 5;
+                        break;
+                    }
+                }
+
+                posicion++;
+            }
+
+            if (!exists)
+            {
+                exists = true;
+                montoSugerido = (montoCaja - totalApuestas) / 60;
+            }
+
+            var monto = Math.Round(montoSugerido, 2);
+            return monto;
         }
     }
 }

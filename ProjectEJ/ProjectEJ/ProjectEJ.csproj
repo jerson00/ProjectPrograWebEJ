@@ -220,6 +220,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Apuestas.cs" />
     <Compile Include="Models\Caja.cs" />
+    <Compile Include="Models\Entidades\ApuestaResponse.cs" />
     <Compile Include="Models\Entidades\ApuestasQuery.cs" />
     <Compile Include="Models\Entidades\GanadoresQuery.cs" />
     <Compile Include="Models\Entidades\NotificarGanadores.cs" />
