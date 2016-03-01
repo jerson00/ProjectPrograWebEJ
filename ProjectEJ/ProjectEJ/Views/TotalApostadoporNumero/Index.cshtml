@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br/>
+<h2>Monto total apostado por número</h2>
+
+<br />
+<div class="row">
+    <form action="/TotalApostadoporNumero" method="get">
+        <div class="col-md-10">
+            <label>Seleccione el sorteo</label>
+            <select class="selectpicker form-control sorteo" id="sorteo" name="sorteos">
+                @foreach (var sorteo in ViewBag.Sorteos)
+                {
+                    if (ViewBag.Sorteo != null && ViewBag.Sorteo.Id == sorteo.Id)
+                    {
+                        <option value="@sorteo.Id" selected> @sorteo.Fecha_Expiracion</option>
+                    }
+                    else
+                    {
+                        <option value="@sorteo.Id"> @sorteo.Fecha_Expiracion</option>
+                    }
+
+                }
+            </select>
+            <br />
+            <input type="submit" value="Mostrar" class="btn btn-default" />
+        </div>
+
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Número
+            </th>
+            <th>
+                Monto total
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (ViewBag.totalApuestas != null)
+        {
+            foreach (var apuestas in ViewBag.totalApuestas)
+            {
+                <tr>
+                    <td>
+                        @apuestas.Numero
+                    </td>
+                    <td>
+                        @apuestas.Monto
+                    </td>
+
+                    
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+
+

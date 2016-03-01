@@ -84,48 +84,12 @@ namespace ProjectEJ.Controllers
             }
         }
 
-        // GET: Apuestas/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: Apuestas/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
+       
         // GET: Apuestas/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
-        }
-
-        // POST: Apuestas/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         public string validarApuesta(ApplicationDbContext db, int numero, double monto, Sorteos sorteo, string userId)

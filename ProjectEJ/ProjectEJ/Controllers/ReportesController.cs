@@ -27,8 +27,11 @@ namespace ProjectEJ.Controllers
             ViewBag.MontoPremiosPeorCaso = montoPremios;
             ViewBag.MontoCaja = montoCaja;
             ViewBag.MontoGananciaMinima = montoGananciaMinima;
+            ViewBag.MontoGananciaMaxima = montoCaja;
             return View();
         }
+
+
 
       
 

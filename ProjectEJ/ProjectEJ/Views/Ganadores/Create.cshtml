@@ -6,18 +6,18 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Ganadores</h4>
+        <h4>Números ganadores</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <label class="control-label col-md-2">Primer número</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PrimerNumero, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.PrimerNumero, new { htmlAttributes = new { @class = "form-control",min=0, max=99 } })
                 @Html.ValidationMessageFor(model => model.PrimerNumero, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -25,7 +25,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Segundo número</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SegundoNumero, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.SegundoNumero, new { htmlAttributes = new { @class = "form-control", min = 0, max = 99 } })
                 @Html.ValidationMessageFor(model => model.SegundoNumero, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,7 +33,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Segundo número</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TercerNumero, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.TercerNumero, new { htmlAttributes = new { @class = "form-control", min = 0, max = 99 } })
                 @Html.ValidationMessageFor(model => model.TercerNumero, "", new { @class = "text-danger" })
             </div>
         </div>

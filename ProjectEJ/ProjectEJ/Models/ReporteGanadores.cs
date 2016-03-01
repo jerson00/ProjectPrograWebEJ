@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ProjectEJ.Models
 {
-    public class Reporte
+    public class ReporteGanadores
     {
     }
 }

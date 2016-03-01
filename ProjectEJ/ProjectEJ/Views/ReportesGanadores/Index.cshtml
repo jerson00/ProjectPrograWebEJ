@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Reporte de ganadores</h2>
+
+<br />
+<div class="row">
+    <form action="/ReportesGanadores" method="get">
+        <div class="col-md-10">
+            <label>Seleccione el sorteo</label>
+            <select class="selectpicker form-control sorteo" id="sorteo" name="sorteos">
+                @foreach (var sorteo in ViewBag.Sorteos)
+                {
+                    if (ViewBag.Sorteo != null && ViewBag.Sorteo.Id == sorteo.Id)
+                    {
+                        <option value="@sorteo.Id" selected> @sorteo.Fecha_Expiracion</option>
+                    }
+                    else
+                    {
+                        <option value="@sorteo.Id"> @sorteo.Fecha_Expiracion</option>
+                    }
+
+                }
+            </select>
+            <br />
+            <input type="submit" value="Mostrar" class="btn btn-default" />
+        </div>
+
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Correo
+            </th>
+            <th>
+                Número
+            </th>
+            <th>
+                Monto
+            </th>
+            <th>
+                Posición
+            </th>
+            <th>
+                Premio
+            </th>
+        </tr>
+    </thead>
+        </table>
+
