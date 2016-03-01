@@ -12,7 +12,7 @@ namespace ProjectEJ.Models
         {
             var apuestas = (from a in db.Apuestas
                             join s in db.Sorteos on a.Sorteos.Id equals s.Id
-                            where s.Id == a.Id
+                            where s.Id == sorteoId
                             group a by a.Numero into g
                             select new ApuestasQuery
                             {

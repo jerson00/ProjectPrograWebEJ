@@ -57,22 +57,34 @@ namespace ProjectEJ.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = collection["Sorteos"].ToString();
-                var sorteo = db.Sorteos.Find(Convert.ToInt32(collection["Sorteos"].ToString()));
-                var objGanadores = new Ganadores
+                var primero = Convert.ToInt32(collection["PrimerNumero"].ToString());
+                var segundo = Convert.ToInt32(collection["SegundoNumero"].ToString());
+                var tercero = Convert.ToInt32(collection["TercerNumero"].ToString());
+
+                if (primero != segundo && segundo != tercero && primero != tercero)
                 {
-                   PrimerNumero = Convert.ToInt32(collection["PrimerNumero"].ToString()),
-                   SegundoNumero = Convert.ToInt32(collection["SegundoNumero"].ToString()),
-                   TercerNumero = Convert.ToInt32(collection["TercerNumero"].ToString()),
-                   Sorteos = sorteo
-                };
-                db.Ganadores.Add(objGanadores);
-                db.SaveChanges();
-                notificarGanadores(sorteo.Id, objGanadores.PrimerNumero, 1);
-                notificarGanadores(sorteo.Id, objGanadores.SegundoNumero, 2);
-                notificarGanadores(sorteo.Id, objGanadores.TercerNumero, 3);
-                Ganadores.updateSorteo(db, sorteo.Id);
+                    var data = collection["Sorteos"].ToString();
+                    var sorteo = db.Sorteos.Find(Convert.ToInt32(collection["Sorteos"].ToString()));
+                    var objGanadores = new Ganadores
+                    {
+                        PrimerNumero = Convert.ToInt32(collection["PrimerNumero"].ToString()),
+                        SegundoNumero = Convert.ToInt32(collection["SegundoNumero"].ToString()),
+                        TercerNumero = Convert.ToInt32(collection["TercerNumero"].ToString()),
+                        Sorteos = sorteo
+                    };
+                    db.Ganadores.Add(objGanadores);
+                    db.SaveChanges();
+                    notificarGanadores(sorteo.Id, objGanadores.PrimerNumero, 1);
+                    notificarGanadores(sorteo.Id, objGanadores.SegundoNumero, 2);
+                    notificarGanadores(sorteo.Id, objGanadores.TercerNumero, 3);
+                    Ganadores.updateSorteo(db, sorteo.Id);
+                    TempData["Success"] = "Ganadores registrados correctamente.";
+                    return RedirectToAction("Index");
+                }
+
+                TempData["Error"] = "Los números ganadores no pueden ser iguales";
                 return RedirectToAction("Index");
+
             }
 
             return RedirectToAction("Index");
@@ -203,6 +215,7 @@ namespace ProjectEJ.Controllers
                 }           
             }
 
+            DescontarPremios(listaGanadores);
             EnviarNotificaciones(db, listaGanadores);
         }
 
@@ -230,6 +243,29 @@ namespace ProjectEJ.Controllers
                 throw;
             }
             
+        }
+
+
+        public void DescontarPremios(List<NotificarGanadores> listaNotificarGanadores)
+        {
+            double descuento = 0;
+            int cajaId = 0;
+            double montoCaja = 0;
+            foreach (var apuesta in listaNotificarGanadores)
+            {
+                descuento += apuesta.Premio;
+            }
+            
+            var cajas = db.Caja.ToList();
+            foreach (var caja in cajas)
+            {
+                cajaId = caja.Id;
+                montoCaja = caja.Monto;
+            }
+
+            var cajaEdit = db.Caja.Find(cajaId);
+            cajaEdit.Monto = montoCaja - descuento;
+            db.SaveChanges();
         }
 
     }

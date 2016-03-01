@@ -4,7 +4,6 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
 @using (Html.BeginForm())
 {
@@ -17,7 +16,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Primer número</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PrimerNumero, new { htmlAttributes = new { @class = "form-control",min=0, max=99 } })
+                @Html.EditorFor(model => model.PrimerNumero, new { htmlAttributes = new {@type = "number", @class = "form-control", min=0, max=99 } })
                 @Html.ValidationMessageFor(model => model.PrimerNumero, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -25,7 +24,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Segundo número</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SegundoNumero, new { htmlAttributes = new { @class = "form-control", min = 0, max = 99 } })
+                @Html.EditorFor(model => model.SegundoNumero, new { htmlAttributes = new { @type = "number", @class = "form-control", min = 0, max = 99 } })
                 @Html.ValidationMessageFor(model => model.SegundoNumero, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,7 +32,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Segundo número</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TercerNumero, new { htmlAttributes = new { @class = "form-control", min = 0, max = 99 } })
+                @Html.EditorFor(model => model.TercerNumero, new { htmlAttributes = new { @type = "number", @class = "form-control", min = 0, max = 99 } })
                 @Html.ValidationMessageFor(model => model.TercerNumero, "", new { @class = "text-danger" })
             </div>
         </div>

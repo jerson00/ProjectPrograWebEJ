@@ -12,5 +12,6 @@ namespace ProjectEJ.Models.Entidades
         public bool Ganador { get; set; }
         public double Premio { get; set; }
         public int Puesto { get; set; }
+        public string Email { get; set; }
     }
 }

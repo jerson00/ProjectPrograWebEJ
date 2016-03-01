@@ -3,6 +3,24 @@
     ViewBag.Title = "Index";
 }
 
+<br />
+<br />
+<br />
+<br />
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 <h2>Números ganadores</h2>
 
 <p>
@@ -34,7 +52,7 @@
             @ganadores.PrimerNumero
         </td>
         <td>
-            @ganadores.PrimerNumero
+            @ganadores.SegundoNumero
         </td>
         <td>
             @ganadores.TercerNumero

@@ -19,11 +19,72 @@ namespace ProjectEJ.Controllers
             {
                 var sorteo_id = Convert.ToInt32(Request["sorteos"].ToString());
                 ViewBag.Sorteo = db.Sorteos.Where(s => s.Id == sorteo_id).First();
+                ViewBag.Ganadores = db.Ganadores.Where(g => g.Sorteos.Id == sorteo_id).First();
+                ViewBag.ListaGanadores = getGanadores(sorteo_id);
             }
             ViewBag.Sorteos = db.Sorteos.Where(s => s.Is_Finished == true);
 
             return View();
 
+        }
+
+        public List<NumerosApostados> getGanadores(int sorteo_id)
+        {
+            var users = db.Users.ToList();
+            var Apuestas = db.Apuestas.Where(a => a.Sorteos.Id == sorteo_id).ToList();
+            var Ganadores = db.Ganadores.Where(g => g.Sorteos.Id == sorteo_id).First();
+            List<NumerosApostados> listGanadores = new List<NumerosApostados>();
+            foreach (var apuesta in Apuestas)
+            {
+                var is_ganador = false;
+                var posicion = 0;
+                double premio = 0;
+                string email = "";
+                if (Ganadores.PrimerNumero == apuesta.Numero)
+                {
+                    is_ganador = true;
+                    posicion = 1;
+                    premio = Convert.ToDouble(apuesta.Monto) * 60;
+                }
+                else if (Ganadores.SegundoNumero == apuesta.Numero)
+                {
+                    is_ganador = true;
+                    posicion = 2;
+                    premio = Convert.ToDouble(apuesta.Monto) * 10;
+                }
+                else if (Ganadores.TercerNumero == apuesta.Numero)
+                {
+                    is_ganador = true;
+                    posicion = 3;
+                    premio = Convert.ToDouble(apuesta.Monto) * 5;
+                }
+
+                foreach (var usuario in users)
+                {
+                    if (usuario.Id == apuesta.Usuario_Id)
+                    {
+                        email = usuario.Email;
+                    }
+                }
+
+                if (is_ganador)
+                {
+                    var objNumeros = new NumerosApostados
+                    {
+                        Numero = apuesta.Numero,
+                        Monto = apuesta.Monto,
+                        Ganador = is_ganador,
+                        Puesto = posicion,
+                        Premio = premio,
+                        Email = email
+                    };
+
+                    listGanadores.Add(objNumeros);
+                }
+                
+            }
+
+            return listGanadores;
         }
     }
 

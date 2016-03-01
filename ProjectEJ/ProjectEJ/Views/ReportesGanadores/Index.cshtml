@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Index";
 }
+<br />
+<br />
+<br />
 
 <h2>Reporte de ganadores</h2>
 
@@ -31,6 +34,15 @@
     </form>
 </div>
 
+@if (ViewBag.Sorteo != null)
+{
+    <h2>@ViewBag.Sorteo.Descripcion - @ViewBag.Sorteo.Fecha_Expiracion</h2>
+    <h4>Primer Número: @ViewBag.Ganadores.PrimerNumero</h4>
+    <h4>Segundo Número: @ViewBag.Ganadores.SegundoNumero</h4>
+    <h4>Tercer Número: @ViewBag.Ganadores.TercerNumero</h4>
+}
+
+
 <table class="table">
     <thead>
         <tr>
@@ -38,7 +50,7 @@
                 Correo
             </th>
             <th>
-                Número
+                Numero
             </th>
             <th>
                 Monto
@@ -51,5 +63,30 @@
             </th>
         </tr>
     </thead>
-        </table>
+    <tbody>
+        @if (ViewBag.ListaGanadores != null)
+        {
+            foreach (var apuestas in ViewBag.ListaGanadores)
+            {
+                <tr>
+                    <td>
+                        @apuestas.Email
+                    </td>
+                    <td>
+                        @apuestas.Numero
+                    </td>
+                    <td>
+                        @apuestas.Monto
+                    </td>
+                    <td>
+                        @apuestas.Puesto
+                    </td>
+                    <td>
+                        @apuestas.Premio
+                    </td>
+                </tr>
+            }
+        }
 
+    </tbody>
+</table>
