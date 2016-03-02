@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjectEJ.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjectEJ.Controllers
 {
@@ -18,6 +20,12 @@ namespace ProjectEJ.Controllers
         // GET: Cajas
         public ActionResult Index()
         {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            if (!currentUser.Is_Admin)
+            {
+                return Redirect("Apuestas");
+            }
             return View(db.Caja.ToList());
         }
 
@@ -36,7 +44,7 @@ namespace ProjectEJ.Controllers
             return View(caja);
         }
 
-      
+
         // GET: Cajas/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -67,7 +75,7 @@ namespace ProjectEJ.Controllers
             }
             return View(caja);
         }
-       
+
 
         protected override void Dispose(bool disposing)
         {

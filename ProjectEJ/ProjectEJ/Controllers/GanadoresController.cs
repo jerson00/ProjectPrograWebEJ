@@ -11,6 +11,7 @@ using System.Web.Helpers;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using ProjectEJ.Models.Entidades;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjectEJ.Controllers
 {
@@ -22,6 +23,12 @@ namespace ProjectEJ.Controllers
         // GET: Ganadores
         public ActionResult Index()
         {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            if (!currentUser.Is_Admin)
+            {
+                return Redirect("Apuestas");
+            }
             ViewBag.Ganadores = Ganadores.getGanadores(db);
             return View();
         }

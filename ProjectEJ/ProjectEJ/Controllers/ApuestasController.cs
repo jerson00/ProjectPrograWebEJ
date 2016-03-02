@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectEJ.Models;
 using ProjectEJ.Models.Entidades;
 using System;
@@ -16,7 +17,8 @@ namespace ProjectEJ.Controllers
         [Authorize]
         // GET: Apuestas
         public ActionResult Index()
-        {      
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             ViewBag.Sorteos = db.Sorteos.Where(s => s.Is_Active == true && s.Is_Finished == false && s.Fecha_Expiracion > DateTime.Now);
             return View();
         }

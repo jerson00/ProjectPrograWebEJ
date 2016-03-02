@@ -1,4 +1,6 @@
-﻿using ProjectEJ.Models;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using ProjectEJ.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,12 @@ namespace ProjectEJ.Controllers
         // GET: Reporte
         public ActionResult Index()
         {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            if (!currentUser.Is_Admin)
+            {
+                return Redirect("Apuestas");
+            }
             var listApuestas = Apuestas.getApuestasByNum(db);
             double montoPremios = Apuestas.getTotalPeorCaso(listApuestas);
             

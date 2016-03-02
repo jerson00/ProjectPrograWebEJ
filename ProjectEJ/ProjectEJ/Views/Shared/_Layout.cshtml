@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using ProjectEJ.Models;
+@using ProjectEJ.Models.Entidades;
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -23,14 +27,26 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Apostar", "Index", "Apuestas")</li>
-                    <li>@Html.ActionLink("Sorteos", "Index", "Sorteos")</li>
-                    <li>@Html.ActionLink("Caja", "Index", "Cajas")</li>
-                    <li>@Html.ActionLink("Ganadores", "Index", "Ganadores")</li>
-                    <li>@Html.ActionLink("Reportes", "Index", "Reportes")</li>
-                    <li>@Html.ActionLink("Mis Premios", "Index", "MisPremios")</li>
-                    <li>@Html.ActionLink("Reporte Ganadores", "Index", "ReportesGanadores")</li>
-                    <li>@Html.ActionLink("Números Apostados", "Index", "TotalApostadoporNumero")</li>
+                    
+
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Apostar", "Index", "Apuestas")</li>
+                        <li>@Html.ActionLink("Mis Premios", "Index", "MisPremios")</li>
+                        
+                            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+                            if (currentUser.Is_Admin)
+                            {
+                                <li>@Html.ActionLink("Sorteos", "Index", "Sorteos")</li>
+                                <li>@Html.ActionLink("Caja", "Index", "Cajas")</li>
+                                <li>@Html.ActionLink("Ganadores", "Index", "Ganadores")</li>
+                                <li>@Html.ActionLink("Reportes", "Index", "Reportes")</li>
+                                <li>@Html.ActionLink("Reporte Ganadores", "Index", "ReportesGanadores")</li>
+                                <li>@Html.ActionLink("Números Apostados", "Index", "TotalApostadoporNumero")</li>
+                            }
+                     }           
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -1,4 +1,6 @@
-﻿using ProjectEJ.Models;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using ProjectEJ.Models;
 using ProjectEJ.Models.Entidades;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,12 @@ namespace ProjectEJ.Controllers
         // GET: ReportesGanadores
         public ActionResult Index()
         {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            if (!currentUser.Is_Admin)
+            {
+                return Redirect("Apuestas");
+            }
             if (!string.IsNullOrEmpty(Request["sorteos"]))
             {
                 var sorteo_id = Convert.ToInt32(Request["sorteos"].ToString());
