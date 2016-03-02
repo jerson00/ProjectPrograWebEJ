@@ -254,3 +254,4 @@ C:\Users\esteb\OneDrive\Documentos\PrimerProyectoWeb2\ProjectPrograWebEJ\Project
 C:\Users\esteb\OneDrive\Documentos\PrimerProyectoWeb2\ProjectPrograWebEJ\ProjectEJ\ProjectEJ\obj\Debug\ProjectEJ.dll
 C:\Users\esteb\OneDrive\Documentos\PrimerProyectoWeb2\ProjectPrograWebEJ\ProjectEJ\ProjectEJ\obj\Debug\ProjectEJ.pdb
 C:\Users\Jerson\Documents\ProjectPrograWebEJ\ProjectPrograWebEJ\ProjectEJ\ProjectEJ\obj\Debug\ProjectEJ.Migrations.CreateAdminUser.resources
+C:\Users\esteb\OneDrive\Documentos\PrimerProyectoWeb2\ProjectPrograWebEJ\ProjectEJ\ProjectEJ\obj\Debug\ProjectEJ.Migrations.CreateAdminUser.resources

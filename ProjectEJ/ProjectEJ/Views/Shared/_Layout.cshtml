@@ -12,6 +12,8 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery-ui.min.css" />
+
 
 </head>
 <body>
@@ -62,5 +64,11 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#Fecha_Expiracion').datepicker({dateFormat: 'dd/mm/yy'}).val();
+        });
+    </script>
 </body>
 </html>
